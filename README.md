@@ -1,4 +1,4 @@
-# Teste_Leitor_de_Código_de_Barras_de_Boletos_Bancario_Arrecadacao
+# Teste: Leitor de Linhas Digitáveis de códigos de Barra de Boletos (Bancário e Arrecadação)
 
 Este projeto é uma API de leitor de linhas digitáveis de código de barra (Bancários e Arrecadação)
 Linguagem: JavaScript
