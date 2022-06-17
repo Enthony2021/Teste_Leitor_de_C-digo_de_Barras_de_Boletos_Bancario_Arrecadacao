@@ -170,7 +170,7 @@ module.exports = class Arrecadacao {
         let dataVencimento
         if (this.getSegmento() == 9) { // Segmento Bancário
             dataVencimento = this.getBarCode().slice(19, 27)
-            return dataVencimento
+            return null
         }
 
         // Outros segmentos (CNPJ / Contribuintes MF)
