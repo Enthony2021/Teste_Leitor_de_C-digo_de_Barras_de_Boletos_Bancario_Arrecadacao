@@ -10,16 +10,8 @@ server.get('/boleto/:code', (req, res) => {
     let dataArrecadacao
     let dataBoleto
 
-    // Filtra a linha digitável pelo tamanho para instanciar o método de validacao para cada tipo de classe
-    // Se não instanciar alguma classe retorna status 400
-    if(code.length === 47) {
-        dataBoleto = boleto.validacaoBoleto()
-    } else if(code.length === 48) {
-        dataArrecadacao = arrecadacao.validacaoArrecadacao()
-    } else {
-        res.status(400).send('<h1 style="text-align: center">Erro: 400</h1>')
-    }
-
+    dataBoleto = boleto.validacaoBoleto()
+    dataArrecadacao = arrecadacao.validacaoArrecadacao()
 
     // Responde pela função que retornar algum objeto
     if(dataBoleto) {
