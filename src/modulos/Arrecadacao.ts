@@ -115,7 +115,7 @@ module.exports = class Arrecadacao {
     }
 
 
-    // Tipo do Segmento (2° posição do código de barra) 
+    // Tipo do Segmento (2° posição do código de barra)
     private getSegmento(): number | boolean {
         const segmento: number = parseInt(this.barCode[1]);
 
@@ -149,7 +149,7 @@ module.exports = class Arrecadacao {
 
         // Outros segmentos (CNPJ / Contribuintes MF)
         if (this.getSegmento() !== 9) {
-            return dataVencimento = parseInt(this.barCode.slice(19, 27))
+            return dataVencimento = parseInt(this.barCode.slice(19, 27));
         }
         return null;
     }
@@ -162,10 +162,16 @@ module.exports = class Arrecadacao {
             this.validacaoDV() === true && 
             this.getSegmento() &&
             this.avaliacaoNumerica() === true) {
-            return new Result(this.barCode, this.getValor(), this.getDataDeVencimento());
-        } else {
-            return false;
+
+            const result: Result = {
+                barCode: this.barCode, 
+                amount: this.getValor(), 
+                expirationDate: this.getDataDeVencimento() 
+            }
+
+            return result;
         }
+        return false;
     }
 
 
