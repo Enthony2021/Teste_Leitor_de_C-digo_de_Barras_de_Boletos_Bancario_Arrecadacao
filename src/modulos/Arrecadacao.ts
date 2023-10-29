@@ -3,20 +3,12 @@ import Result from "./Result";
 module.exports = class Arrecadacao {
     private code: string;
     private bloco1: string;
-    private bloco2: string;
-    private bloco3: string;
-    private bloco4: string;
-    private barCode: string;
     private idValorReferencia: number; // Identificador de Valor/Referência
     
     constructor(code: string) {
         this.code = code;
         this.bloco1 = this.code.slice(0, 11);
-        this.bloco2 = this.code.slice(12, 23);
-        this.bloco3 = this.code.slice(24, 35);
-        this.bloco4 = this.code.slice(36, 47);
-        this.barCode = `${this.bloco1}${this.bloco2}${this.bloco3}${this.bloco4}`;
-        this.idValorReferencia = parseInt(this.barCode[2]);
+        this.idValorReferencia = parseInt(this.code[2]);
     }
 
     // Validaçao - Se é boleto de Concessionária/Arrecadação(8) (primeiro digito: 8 - tamanho (48)
@@ -32,13 +24,13 @@ module.exports = class Arrecadacao {
     
     // Cálculo e Validação do Dígito Verificador Geral (Código de barra) 
     private validacaoDV(): boolean {
-        let DVReal: number = parseInt(this.barCode[3]) // DV retirada do Código de Barra
+        let DVReal: number = parseInt(this.code[3]) // DV retirada do Código de Barra
         let DVcalc: number // DV que será calculada
         
         // bloco de 43 posições do código de barra retirando o DV (DAC dígito de Auto-Conferência)
         let blocoDAC: string[] = [
-            ...this.barCode.slice(0, 3),
-            ...this.barCode.slice(4, 45)
+            ...this.code.slice(0, 3),
+            ...this.code.slice(4, 45)
         ];
 
         // blocoDAC invertido
@@ -101,7 +93,7 @@ module.exports = class Arrecadacao {
     private getValor(): number | null {
         // Valor a ser cobrado
         if (this.idValorReferencia === 6 || this.idValorReferencia === 8) {
-            const valor: number = parseFloat((parseInt(this.barCode.slice(4, 15)) / 100).toFixed(2));
+            const valor: number = parseFloat((parseInt(this.code.slice(4, 15)) / 100).toFixed(2));
             
             return valor;
         }
@@ -117,7 +109,7 @@ module.exports = class Arrecadacao {
 
     // Tipo do Segmento (2° posição do código de barra)
     private getSegmento(): number | boolean {
-        const segmento: number = parseInt(this.barCode[1]);
+        const segmento: number = parseInt(this.code[1]);
 
         if (segmento === 0 || segmento === 8) {
             return false; // não pertence a nenhum seguimento listado
@@ -144,12 +136,12 @@ module.exports = class Arrecadacao {
         let dataVencimento: number;
 
         if (this.getSegmento() === 9) { // Segmento Bancário
-            return dataVencimento = parseInt(this.barCode.slice(19, 27));
+            return dataVencimento = parseInt(this.code.slice(19, 27));
         }
 
         // Outros segmentos (CNPJ / Contribuintes MF)
         if (this.getSegmento() !== 9) {
-            return dataVencimento = parseInt(this.barCode.slice(19, 27));
+            return dataVencimento = parseInt(this.code.slice(19, 27));
         }
         return null;
     }
@@ -164,7 +156,7 @@ module.exports = class Arrecadacao {
             this.avaliacaoNumerica() === true) {
 
             const result: Result = {
-                barCode: this.barCode, 
+                code: this.code, 
                 amount: this.getValor(), 
                 expirationDate: this.getDataDeVencimento() 
             }
@@ -181,7 +173,7 @@ module.exports = class Arrecadacao {
             tamanhoBoleto: this.validacaoArrecadacaoTamanho(), // Boolean 
             apenasNumeros: this.avaliacaoNumerica(), // Boolean
             DVbarCode: this.validacaoDV(), // Boolean
-            barCode: this.barCode, // String
+            code: this.code, // String
             amount: this.getValor(), // String ou null
             expirationDate: this.getDataDeVencimento() // String ou null
         } 

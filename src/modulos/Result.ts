@@ -1,5 +1,5 @@
 type Result = {
-  barCode: string;
+  code: string;
   amount: number | null;
   expirationDate: number | null;
 }
