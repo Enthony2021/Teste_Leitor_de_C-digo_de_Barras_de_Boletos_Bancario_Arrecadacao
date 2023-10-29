@@ -1,11 +1,8 @@
-import express from 'express';
+import express, {Application} from 'express';
 import boletoRoutes from './routes/boletoRoutes';
 
-
-const app = express();
-
 class App {
-    app: any;
+    app: Application;
 
     constructor() {
         this.app = express();
