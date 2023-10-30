@@ -16,7 +16,7 @@ class App {
     }
 
     private routes() {
-        this.app.use('/boleto', boletoRoutes);
+        this.app.use('/', boletoRoutes);
     }
 }
 

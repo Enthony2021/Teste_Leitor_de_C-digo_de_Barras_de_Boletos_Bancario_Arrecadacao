@@ -1,4 +1,4 @@
-const Boleto = require('../modulos/boleto')
+const Boleto = require('../src/modulos/Boleto');
 
 // Teste dos valores (Código de Barra, valor e data de vencimento) gerados.
 

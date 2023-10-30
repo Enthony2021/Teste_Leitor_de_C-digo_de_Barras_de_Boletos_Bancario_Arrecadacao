@@ -1,4 +1,4 @@
-const Arrecadacao = require('../modulos/arrecadacao')
+const Arrecadacao = require('../src/modulos/Arrecadacao');
 
 
 // *********************** Boletos de Arrecadação ***************************

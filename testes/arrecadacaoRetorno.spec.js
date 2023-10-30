@@ -1,4 +1,4 @@
-const Arrecadacao = require('../modulos/arrecadacao')
+const Arrecadacao = require('../src/modulos/Arrecadacao')
 
 // Teste dos valores (Código de Barra, valor e data de vencimento) gerados:
 

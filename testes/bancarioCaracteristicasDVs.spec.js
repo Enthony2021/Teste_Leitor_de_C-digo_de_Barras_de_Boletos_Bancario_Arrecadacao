@@ -1,4 +1,4 @@
-const Boleto = require('../modulos/boleto')
+const Boleto = require('../src/modulos/Boleto');
 
 /* 
     A intenção é testar as características das linhas digitáveis,
