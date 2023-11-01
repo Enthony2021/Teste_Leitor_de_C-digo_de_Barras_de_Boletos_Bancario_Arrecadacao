@@ -1,4 +1,4 @@
-const Arrecadacao = require('../src/modulos/Arrecadacao')
+const Arrecadacao = require('../src/modulos/Arrecadacao');
 
 // Teste dos valores (Código de Barra, valor e data de vencimento) gerados:
 
@@ -24,7 +24,7 @@ describe('Retorno dos Boletos de Arrecadação', () => {
     const arrecadacao = new Arrecadacao(code)
     
     it('Código de Barra - Arrecadação', () => {
-        const result = arrecadacao.testeBoleto()['barCode']
+        const result = arrecadacao.testeBoleto()['code']
         expect(result).toBe('84610000001086000240200240810226361827041102')
     })
 

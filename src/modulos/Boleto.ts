@@ -58,7 +58,7 @@ module.exports = class Boleto {
         i % 2 === 0
           ? (produto = parseInt(blocoInv[i]) * 2)
           : (produto = parseInt(blocoInv[i]) * 1);
-
+        
         produto > 9
           ? (produto =
               Number(produto.toString()[0]) + Number(produto.toString()[1]))
@@ -66,10 +66,8 @@ module.exports = class Boleto {
         soma += produto;
       }
 
-      let resultDv: number = (soma / 10 + 1) * 10 - soma;
-
+      let resultDv: number = ((parseInt((soma / 10).toString()) + 1) * 10) - soma;
       if (resultDv === 10) resultDv = 0;
-
       dv123calc.push(resultDv);
       soma = 0;
     }
@@ -85,7 +83,6 @@ module.exports = class Boleto {
     // Avalia os dígitos verificadores calculados com os capturados da linha digitável
     for (let i = 0; i < 3; i++) {
       if (this.dv123[i] !== dv123calc[i]) {
-        console.log(this.dv123[i], " --- ", dv123calc[i]);
         return false;
       }
     }
@@ -201,13 +198,6 @@ module.exports = class Boleto {
 
       return result;
     }
-
-    // console.log(
-    //   this.validarVerificadores123(),
-    //   this.tamanhoDaLinha(),
-    //   this.avaliacaoNumerica(),
-    //   this.dvCodigoDeBarra()
-    // );
 
     return false;
   }

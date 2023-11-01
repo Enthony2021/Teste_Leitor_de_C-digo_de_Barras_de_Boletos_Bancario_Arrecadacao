@@ -1,18 +1,20 @@
 import Result from "./Result";
 
 module.exports = class Arrecadacao {
-    private code: string;
+    public code: string;
     private bloco1: string;
     private idValorReferencia: number; // Identificador de Valor/Referência
-    
+    private barCode: string;
+
     constructor(code: string) {
         this.code = code;
+        this.barCode = `${this.code.slice(0, 11)}${this.code.slice(12, 23)}${this.code.slice(24, 35)}${this.code.slice(36, 47)}`;
         this.bloco1 = this.code.slice(0, 11);
-        this.idValorReferencia = parseInt(this.code[2]);
+        this.idValorReferencia = parseInt(this.barCode[2]);
     }
 
     // Validaçao - Se é boleto de Concessionária/Arrecadação(8) (primeiro digito: 8 - tamanho (48)
-    private validacaoArrecadacaoTamanho(): boolean {
+    public validacaoArrecadacaoTamanho(): boolean {
         return parseInt(this.bloco1[0]) == 8 && this.code.length === 48 ? true : false;
     }
 
@@ -24,13 +26,13 @@ module.exports = class Arrecadacao {
     
     // Cálculo e Validação do Dígito Verificador Geral (Código de barra) 
     private validacaoDV(): boolean {
-        let DVReal: number = parseInt(this.code[3]) // DV retirada do Código de Barra
+        let DVReal: number = parseInt(this.barCode[3]) // DV retirada do Código de Barra
         let DVcalc: number // DV que será calculada
         
         // bloco de 43 posições do código de barra retirando o DV (DAC dígito de Auto-Conferência)
         let blocoDAC: string[] = [
-            ...this.code.slice(0, 3),
-            ...this.code.slice(4, 45)
+            ...this.barCode.slice(0, 3),
+            ...this.barCode.slice(4, 45)
         ];
 
         // blocoDAC invertido
@@ -56,7 +58,6 @@ module.exports = class Arrecadacao {
             } 
             
             DVcalc = 10 - (soma%10);
-
             return DVcalc == DVReal ? true : false;
         }
 
@@ -66,7 +67,7 @@ module.exports = class Arrecadacao {
 
             // cálculo da soma usando os multiplicadores
             let i: number = 0
-            let j:number = 2 //J será os Multiplicadores
+            let j: number = 2 //J será os Multiplicadores
             while(blocoDACInv[i]) {
 
                 soma += parseInt(blocoDACInv[i])*j;
@@ -80,7 +81,6 @@ module.exports = class Arrecadacao {
 
             if (DVcalc === 0 || DVcalc === 10 ) DVcalc = 0;
             if (DVcalc === 10) DVcalc = 1;
-
             if ( DVcalc == DVReal) {
                 return true;
             }
@@ -158,11 +158,12 @@ module.exports = class Arrecadacao {
             const result: Result = {
                 code: this.code, 
                 amount: this.getValor(), 
-                expirationDate: this.getDataDeVencimento() 
+                expirationDate: " --- " 
             }
 
             return result;
         }
+
         return false;
     }
 

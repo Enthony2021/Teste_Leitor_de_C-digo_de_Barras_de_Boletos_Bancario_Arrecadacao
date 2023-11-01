@@ -1,7 +1,7 @@
 # Teste: Leitor de Linhas Digitáveis de códigos de Barra de Boletos (Bancário e Arrecadação)
 
 ## Este projeto é uma API de leitor de linhas digitáveis de código de barra (Bancários e Arrecadação)
-## Linguagem: JavaScript
+## Linguagem: JavaScript & TypeScript
 ### Tecnologias usadas foram: Node.js, Express.js, jest.js e nodemon 
 
   > Este projeto é um teste prático de desenvolvimento BackEnd Node.js  

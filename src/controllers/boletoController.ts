@@ -11,16 +11,25 @@ export function main(req: Request, res: Response) {
   }
 
   if (req.params.code) {
-    const code: string = req.params.code; // Aqui assumimos que 'code' é do tipo string
-    const boleto: typeof Boleto = new Boleto(code);
+    const code: string = req.params.code;
     const arrecadacao: typeof Arrecadacao = new Arrecadacao(code);
 
-    const dataArrecadacao: typeof Result = arrecadacao.validacaoArrecadacao();;
-    const dataBoleto: typeof Result = boleto.validacaoBoleto();
-    console.log(dataBoleto);
-    console.log(dataArrecadacao);
+    let dataBoleto: typeof Result;
+    let dataArrecadacao: typeof Result;
 
-    // Responde pela função que retornar algum objeto
+    // Testa primeiramente se o tipo do boleto é de arrecadação (ou boleto comum)
+    if (arrecadacao.validacaoArrecadacaoTamanho()) {
+
+      dataArrecadacao = arrecadacao.validacaoArrecadacao();
+
+    } else {
+
+      const boleto: typeof Boleto = new Boleto(code);
+      dataBoleto = boleto.validacaoBoleto();
+      
+    }
+
+    // Responde pelo que retornar algum objeto do tipo Result
     if (dataBoleto) {
       return res.status(200).json(dataBoleto);
     }
@@ -29,5 +38,6 @@ export function main(req: Request, res: Response) {
       return res.status(200).json(dataArrecadacao);
     }
   }
+  
   return res.status(400).send('<h1 style="text-align: center">Erro: 400</h1>');
 }
