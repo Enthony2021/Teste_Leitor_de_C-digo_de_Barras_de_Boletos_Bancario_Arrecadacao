@@ -1,6 +1,6 @@
 type Result = {
   code: string;
-  amount: number | null;
+  amount: string | null;
   expirationDate: number | string | null;
 }
 

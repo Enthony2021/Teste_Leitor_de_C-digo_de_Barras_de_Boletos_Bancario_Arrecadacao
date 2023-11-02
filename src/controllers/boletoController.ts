@@ -1,6 +1,6 @@
-const Boleto = require("../modulos/Boleto");
-const Arrecadacao = require("../modulos/Arrecadacao");
-const Result = require("../modulos/Result");
+import Boleto from '../modulos/boleto';
+import Arrecadacao from '../modulos/Arrecadacao';
+import Result from '../modulos/Result';
 import { Request, Response } from "express";
 
 export function main(req: Request, res: Response) {
@@ -12,31 +12,31 @@ export function main(req: Request, res: Response) {
 
   if (req.params.code) {
     const code: string = req.params.code;
-    const arrecadacao: typeof Arrecadacao = new Arrecadacao(code);
+    const arrecadacao: Arrecadacao = new Arrecadacao(code);
 
-    let dataBoleto: typeof Result;
-    let dataArrecadacao: typeof Result;
+    let dataBoleto:  Result | boolean;
+    let dataArrecadacao:  Result | boolean;
 
     // Testa primeiramente se o tipo do boleto é de arrecadação (ou boleto comum)
     if (arrecadacao.validacaoArrecadacaoTamanho()) {
 
       dataArrecadacao = arrecadacao.validacaoArrecadacao();
 
+      if (dataArrecadacao) {
+        return res.status(200).json(dataArrecadacao);
+      }
+
     } else {
 
-      const boleto: typeof Boleto = new Boleto(code);
+      const boleto: Boleto = new Boleto(code);
       dataBoleto = boleto.validacaoBoleto();
+
+      if (dataBoleto) {
+        return res.status(200).json(dataBoleto);
+      }
       
     }
-
-    // Responde pelo que retornar algum objeto do tipo Result
-    if (dataBoleto) {
-      return res.status(200).json(dataBoleto);
-    }
-
-    if (dataArrecadacao) {
-      return res.status(200).json(dataArrecadacao);
-    }
+    
   }
   
   return res.status(400).send('<h1 style="text-align: center">Erro: 400</h1>');

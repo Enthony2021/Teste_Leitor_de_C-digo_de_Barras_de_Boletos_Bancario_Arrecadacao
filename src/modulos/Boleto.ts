@@ -1,6 +1,6 @@
 import Result from "./Result";
 
-module.exports = class Boleto {
+export default class Boleto {
   private code: string;
   private bloco1: string;
   private bloco2: string;
@@ -10,6 +10,7 @@ module.exports = class Boleto {
   private blocos123: string[];
   private dv123: number[] = [];
   private codigoDeBarra: string[];
+  private barCode: string;
 
   constructor(code: string) {
     this.code = code;
@@ -24,6 +25,7 @@ module.exports = class Boleto {
       Number(this.blocos123[1][10]),
       Number(this.blocos123[2][10]),
     ];
+
     this.codigoDeBarra = [
       ...this.bloco1.slice(0, 4),
       ...this.bloco4,
@@ -33,6 +35,9 @@ module.exports = class Boleto {
       ...this.bloco2.slice(6, 10),
       ...this.bloco3.slice(0, 10),
     ];
+
+    this.barCode = `${this.bloco1.slice(0, 4)}${this.bloco4}${this.bloco5}${this.bloco1.slice(4, 9)}${this.bloco2.slice(0, 6)}${this.bloco2.slice(6, 10)}${this.bloco3.slice(0, 10)}`;
+
   }
 
   private gerarVerificadores123(): number[] {
@@ -94,7 +99,7 @@ module.exports = class Boleto {
   private valorBoleto(): string {
     const valorBruto: number = parseInt(this.bloco5.slice(4, 14));
 
-    const valorReal = (valorBruto / 100).toFixed(2);
+    const valorReal: string = (valorBruto / 100).toFixed(2);
     return valorReal;
   }
 
@@ -191,8 +196,8 @@ module.exports = class Boleto {
     ) {
         
       const result: Result = {
-        code: this.code,
-        amount: parseFloat(this.valorBoleto()),
+        code: this.barCode,
+        amount: this.valorBoleto(),
         expirationDate: this.dataVencimento(),
       };
 
@@ -209,7 +214,7 @@ module.exports = class Boleto {
       apenasNumeros: this.avaliacaoNumerica(), // Boolen
       DVsValidos: this.validarVerificadores123(), // Boolen
       DVbarCode: this.dvCodigoDeBarra(), // Boolean
-      barCode: this.codigoDeBarra, // String
+      barCode: this.barCode, // String
       amount: this.valorBoleto(), // String
       expirationDate: this.dataVencimento(), // String
     };
