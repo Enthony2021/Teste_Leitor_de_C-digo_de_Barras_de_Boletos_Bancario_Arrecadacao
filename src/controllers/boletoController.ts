@@ -1,4 +1,4 @@
-import Boleto from '../modulos/boleto';
+import Boleto from '../modulos/Boleto';
 import Arrecadacao from '../modulos/Arrecadacao';
 import Result from '../modulos/Result';
 import { Request, Response } from "express";
