@@ -1,4 +1,4 @@
-import Boleto from "../src/modulos/boleto";
+import Boleto from "../src/modulos/Boleto";
 
 /* 
     A intenção é testar as características das linhas digitáveis,

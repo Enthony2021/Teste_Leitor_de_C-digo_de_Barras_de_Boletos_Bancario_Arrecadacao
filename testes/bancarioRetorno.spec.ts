@@ -1,4 +1,4 @@
-import Boleto from "../src/modulos/boleto";
+import Boleto from "../src/modulos/Boleto";
 
 // Teste dos valores (Código de Barra, valor e data de vencimento) gerados.
 
